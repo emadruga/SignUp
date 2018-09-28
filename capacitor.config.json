@@ -1,0 +1,6 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "signup",
+  "bundledWebRuntime": false,
+  "webDir": "www"
+}
