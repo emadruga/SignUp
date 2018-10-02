@@ -12,6 +12,11 @@ import { Person }        from '../interfaces/person';
 
 export class NovoCadastroPage implements OnInit {
 
+    private localPerson: Person;
+    // Is it a brand new insert or editing existing person ??
+    private isInsert: boolean;
+
+    private cpf_validators: any;
     
     private nome_completo: FormControl;
     private data_nasc    : FormControl;
@@ -34,6 +39,15 @@ export class NovoCadastroPage implements OnInit {
 		private formBuilder: FormBuilder,
 	        private navCtrl: NavController) {
 
+	this.localPerson = undefined;
+	this.isInsert    = true;
+	this.cpf_validators = Validators.compose([
+	    Validators.required,
+	    Validators.minLength(14),
+	    Validators.maxLength(14),
+	    Validators.pattern('^[0-9]{3}[.][0-9]{3}[.][0-9]{3}[-][0-9]{2}$')
+	]);
+
 	this.nome_completo = this.formBuilder.control('',  Validators.compose([
 	    Validators.required,
 	    Validators.maxLength(40),
@@ -46,12 +60,7 @@ export class NovoCadastroPage implements OnInit {
 	    Validators.pattern('^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$')
 	]));
 	this.rg_identidade = this.formBuilder.control('', Validators.required);
-	this.cpf           = this.formBuilder.control('', Validators.compose([
-	    Validators.required,
-	    Validators.minLength(14),
-	    Validators.maxLength(14),
-	    Validators.pattern('^[0-9]{3}[.][0-9]{3}[.][0-9]{3}[-][0-9]{2}$')
-	]));
+	this.cpf           = this.formBuilder.control('', this.cpf_validators);
 	this.sexo          = this.formBuilder.control('', Validators.required);
 	this.email         = this.formBuilder.control('', Validators.required);
 	this.cidade        = this.formBuilder.control('', Validators.required);
@@ -76,6 +85,35 @@ export class NovoCadastroPage implements OnInit {
     }
 
     ngOnInit() {
+
+	this.localPerson = this.personService.getLocalPerson();
+	
+	if (this.localPerson !== undefined) {
+
+	    // The page is going to be used to modify existing person
+	    this.isInsert = false;
+
+	    this.cpf           .reset({ value: this.localPerson. cpf,
+					disabled: true });
+	    this.cpf.clearValidators();
+
+	    this.nome_completo .setValue(this.localPerson. nome_completo );
+	    this.data_nasc     .setValue(this.localPerson. data_nasc     );
+	    this.rg_identidade .setValue(this.localPerson. rg_identidade );
+	    this.sexo          .setValue(this.localPerson. sexo          );
+	    this.email         .setValue(this.localPerson. email         );
+	    this.cidade        .setValue(this.localPerson. cidade        );
+	    this.cep           .setValue(this.localPerson. cep           );
+	    this.telefone      .setValue(this.localPerson. telefone      );
+	    this.deficiencia   .setValue(this.localPerson. deficiencia   );
+	    this.cotista       .setValue(this.localPerson. cotista       );
+
+	} else {
+	    this.cpf           .reset({ value: '',
+					disabled: false });
+	    this.cpf.setValidators(this.cpf_validators);
+	}
+	this.cpf.updateValueAndValidity();
     }
 
     doCancel(): void {
@@ -194,7 +232,8 @@ export class NovoCadastroPage implements OnInit {
 		(person: Person) => {
 		    console.log("Id recebido: " + person._id);
 		    this.alertInsertOk("Informações salvas!");
-
+		    this.personService.persistPersonLocally(person);
+		    this.navCtrl.navigateForward('/perfil');
 		},
 		(err) => {
 		    console.log(err);

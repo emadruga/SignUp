@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'CadastroSenha', loadChildren: './cadastro-senha/cadastro-senha.module#CadastroSenhaPageModule' },
   { path: 'AtualizarCadastro', loadChildren: './atualizar-cadastro/atualizar-cadastro.module#AtualizarCadastroPageModule' },
   { path: 'FazerLogin', loadChildren: './fazer-login/fazer-login.module#FazerLoginPageModule' },
+  { path: 'perfil', loadChildren: './perfil/perfil.module#PerfilPageModule' },
 ];
 
 @NgModule({

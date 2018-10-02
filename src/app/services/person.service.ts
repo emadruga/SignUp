@@ -7,7 +7,13 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class PersonService {
-    constructor(private http: HttpClient) { }
+
+    private person: Person;
+    
+    constructor(private http: HttpClient) {
+
+	this.person = undefined;
+    }
 
     doAuthenticateLogin(credentialData) : Observable<Person> {
 
@@ -23,6 +29,13 @@ export class PersonService {
 			   });
     }
 
+    persistPersonLocally(p: Person) {
+	this.person = p;
+    }
+
+    getLocalPerson() : Person {
+	return this.person;
+    }
     
     saveApplicant(personData) : Observable<Person> {
 

@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ficha de Inscrição</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="header-image"></div>
+  <div class="main-content" text-wrap text-center>
+    <div class="circular"></div>
+    <h2>{{pessoa.nome_completo}}</h2>
+    <p>{{pessoa.cidade}} &bull; {{pessoa.cep}}</p>
+    <p class="profile-description">Segurança Cibernética</p>
+    <hr>
+  </div>
+  <div align="center">
+    <ion-button class="edit-button" (click)="doEdit()">Editar</ion-button>
+  </div>
+
+</ion-content>
