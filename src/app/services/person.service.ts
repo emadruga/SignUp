@@ -9,6 +9,21 @@ import { Observable } from 'rxjs';
 export class PersonService {
     constructor(private http: HttpClient) { }
 
+    doAuthenticateLogin(credentialData) : Observable<Person> {
+
+	console.log(credentialData);
+	
+	let url = 'http://localhost:8080/api/login';
+	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
+	console.log("Using " + url);
+
+	return  this.http.post<Person>(url,JSON.stringify(credentialData),
+			   {
+			       headers: hdrs,
+			   });
+    }
+
+    
     saveApplicant(personData) : Observable<Person> {
 
 	console.log(personData);
