@@ -11,7 +11,7 @@ import { Person }        from '../interfaces/person';
 })
 export class PerfilPage implements OnInit {
 
-    private pessoa: Person;
+    public pessoa: Person;
     
     constructor(private personServ: PersonService,
 	       private navCtrl: NavController) {

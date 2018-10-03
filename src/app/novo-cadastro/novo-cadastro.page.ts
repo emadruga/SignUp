@@ -32,7 +32,7 @@ export class NovoCadastroPage implements OnInit {
 
     private accented_regex = '^[a-zA-Z \u00C0-\u017F]+$';
 
-    private signUpForm       : FormGroup;
+    public signUpForm       : FormGroup;
 
     constructor(private personService: PersonService,
 		private alertCtrl: AlertController,
