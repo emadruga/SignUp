@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
+  "engines": {
+    "node": "8.9.1"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ionic serve",
