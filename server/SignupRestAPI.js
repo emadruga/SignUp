@@ -169,7 +169,53 @@ app.post('/api/rooms/insert', function(req, res, next) {
     });
 });
 
-    app.post('/api/rooms/reserve', function(req, res) {
+app.post('/api/rooms/update', function(req, res, next) {
+    
+    /* check if CPF is defined first! */
+    const cpf_info = req.body.cpf;
+    
+    if (!cpf_info) {
+	const error = new Error('Faltando CPF no registro...')
+	error.httpStatusCode = 400
+	return next(error)
+    }
+
+    var updatePerson = {
+ 	nome_completo:  req.body.nome_completo,
+	data_nasc:      req.body.data_nasc,
+	rg_identidade:  req.body.rg_identidade, 
+	cpf:	        req.body.cpf,
+	sexo:	        req.body.sexo,	    
+	email:	        req.body.email,	    
+	cidade:	        req.body.cidade,	    
+	cep:	        req.body.cep,	    
+	telefone:	req.body.telefone,	    
+	deficiencia:    req.body.deficiencia,    
+	cotista:        req.body.cotista         
+    };
+
+    var query = { cpf: cpf_info };
+    var options = { new: true };
+    
+    Room.findOneAndUpdate(query, updatePerson, options,(err,user) => {
+	   if (err) {
+	       // handle error
+	       console.log("Problema no servidor: tente de novo mais tarde...");
+	       console.log(err);
+	       err.httpStatusCode = 500
+	       return next(err)
+	   }
+
+	   if (user) {
+	       // the user who goes by this CPF was updated... 
+	       console.log("Registro com CPF " + req.body.cpf + " atualizado...");
+	       res.json(user);
+	   }
+    });
+});
+
+
+app.post('/api/rooms/reserve', function(req, res) {
  
         console.log("Server: " + req.body.cpf);
 
@@ -189,7 +235,7 @@ app.post('/api/rooms/insert', function(req, res, next) {
             }
         });
  
-    });
+});
 
 app.use((err, req, res, next) => {
     // log the error...

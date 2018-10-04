@@ -22,6 +22,11 @@ export class PerfilPage implements OnInit {
 	this.navCtrl.navigateForward('/NovoCadastro');
     }
 
+    doExit() {
+	this.personServ.resetLocalPerson();
+	this.navCtrl.navigateForward('/home');
+    }
+
     ngOnInit() {
 	console.log(this.pessoa);
     }

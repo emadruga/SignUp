@@ -12,6 +12,7 @@ import { Person }        from '../interfaces/person';
 
 export class NovoCadastroPage implements OnInit {
 
+    public  isSaveButtonEnabled: boolean;
     private localPerson: Person;
     // Is it a brand new insert or editing existing person ??
     private isInsert: boolean;
@@ -39,8 +40,9 @@ export class NovoCadastroPage implements OnInit {
 		private formBuilder: FormBuilder,
 	        private navCtrl: NavController) {
 
-	this.localPerson = undefined;
-	this.isInsert    = true;
+	this.localPerson            = undefined;
+	this.isInsert               = true;
+	this.isSaveButtonEnabled    = false;
 	this.cpf_validators = Validators.compose([
 	    Validators.required,
 	    Validators.minLength(14),
@@ -112,6 +114,7 @@ export class NovoCadastroPage implements OnInit {
     }
 
     doCancel(): void {
+	this.personService.resetLocalPerson();
 	this.navCtrl.goBack();
     }
 
@@ -219,26 +222,49 @@ export class NovoCadastroPage implements OnInit {
 	    return;
 	}
 
-	console.log(personData);
+	if (this.isInsert) {
 	
-	console.log("Sending info to database...");
-	this.personService.saveApplicant(personData)
-	    .subscribe(
-		(person: Person) => {
-		    console.log("Id recebido: " + person._id);
-		    this.alertInsertOk("Informações salvas!");
-		    this.personService.persistPersonLocally(person);
-		    this.navCtrl.navigateForward('/perfil');
-		},
-		(err) => {
-		    console.log(err);
-		    if (err.status == 409) {
-			this.alertConflict("Por favor, verifique dados fornecidos.");
-		    } else {
-			this.alertServerFailure("Por favor, tente mais tarde!");
+	    console.log("Sending info to database...");
+	    console.log(personData);
+	    this.personService.saveApplicant(personData)
+		.subscribe(
+		    (person: Person) => {
+			console.log("Id recebido: " + person._id);
+			this.alertInsertOk("Informações salvas!");
+			this.personService.persistPersonLocally(person);
+			this.navCtrl.navigateForward('/perfil');
+		    },
+		    (err) => {
+			console.log(err);
+			if (err.status == 409) {
+			    this.alertConflict("Por favor, verifique dados fornecidos.");
+			} else {
+			    this.alertServerFailure("Por favor, tente mais tarde!");
+			}
 		    }
-		}
-	    );
+		);
+	} else {
+	    console.log("Updating...");
+	    console.log(personData);
+	    this.personService.updateApplicant(personData)
+		.subscribe(
+		    (person: Person) => {
+			console.log("Id recebido: " + person._id);
+			this.alertInsertOk("Informações atualizadas!");
+			this.personService.persistPersonLocally(person);
+			this.navCtrl.navigateForward('/perfil');
+		    },
+		    (err) => {
+			console.log(err);
+			if (err.status == 500) {
+			    this.alertConflict("Registro desconhecido.");
+			} else {
+			    this.alertServerFailure("Por favor, tente mais tarde!");
+			}
+		    }
+		);
+
+	}
     }
 
  

@@ -36,12 +36,32 @@ export class PersonService {
     getLocalPerson() : Person {
 	return this.person;
     }
+
+    resetLocalPerson() : void {
+	this.person = undefined;
+    }
+
     
     saveApplicant(personData) : Observable<Person> {
 
 	console.log(personData);
 	
 	let url = 'http://localhost:8080/api/rooms/insert';
+	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
+	console.log("Using " + url);
+
+	return  this.http.post<Person>(url,JSON.stringify(personData),
+			   {
+			       headers: hdrs,
+			   });
+    }
+
+    updateApplicant(personData) : Observable<Person> {
+
+	console.log("Registro a ser atualizado para:");
+	console.log(personData);
+	
+	let url = 'http://localhost:8080/api/rooms/update';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 

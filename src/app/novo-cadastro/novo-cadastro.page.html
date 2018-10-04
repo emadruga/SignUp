@@ -126,8 +126,8 @@
 	  </div>
 	</ion-card>
 	<div align="center">
-	  <ion-button class="save-button" (click)="doSave()">Enviar</ion-button>
-	  <ion-button class="cancel-button" (click)="doCancel()">Cancelar</ion-button>
+	  <ion-button  shape="round" fill="solid" [disabled]="!signUpForm.touched" (click)="doSave()">Enviar</ion-button>
+	  <ion-button  shape="round" fill="solid" (click)="doCancel()">Retorna</ion-button>
 	</div>
       </div>
     </ion-col>
