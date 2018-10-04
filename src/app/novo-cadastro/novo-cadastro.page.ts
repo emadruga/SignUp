@@ -91,14 +91,12 @@ export class NovoCadastroPage implements OnInit {
 	if (this.localPerson !== undefined) {
 
 	    // The page is going to be used to modify existing person
+	    // rather than add a new person.
 	    this.isInsert = false;
-
-	    this.cpf           .reset({ value: this.localPerson. cpf,
-					disabled: true });
-	    this.cpf.clearValidators();
 
 	    this.nome_completo .setValue(this.localPerson. nome_completo );
 	    this.data_nasc     .setValue(this.localPerson. data_nasc     );
+	    this.cpf           .setValue(this.localPerson. cpf           );
 	    this.rg_identidade .setValue(this.localPerson. rg_identidade );
 	    this.sexo          .setValue(this.localPerson. sexo          );
 	    this.email         .setValue(this.localPerson. email         );
@@ -109,11 +107,8 @@ export class NovoCadastroPage implements OnInit {
 	    this.cotista       .setValue(this.localPerson. cotista       );
 
 	} else {
-	    this.cpf           .reset({ value: '',
-					disabled: false });
-	    this.cpf.setValidators(this.cpf_validators);
+	    this.isInsert = true;
 	}
-	this.cpf.updateValueAndValidity();
     }
 
     doCancel(): void {

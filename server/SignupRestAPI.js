@@ -48,9 +48,9 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
  
-Room.remove({}, function(res){
-    console.log("removed records");
-});
+//Room.remove({}, function(res){
+//    console.log("removed records");
+//});
  
 Room.count({}, function(err, count){
     console.log("Rooms: " + count);
