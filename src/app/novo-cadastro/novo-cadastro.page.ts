@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import * as cpf from "@fnando/cpf";
 import { PersonService } from '../services/person.service';
 import { Person }        from '../interfaces/person';
 
@@ -217,6 +218,13 @@ export class NovoCadastroPage implements OnInit {
 				      "Usar dígitos e separadores '.' e '-'. Ex: 123.456.789-00" );
 	    return;
 	}
+
+	if (!cpf.isValid(this.cpf.value)) {
+	    this.alertProblemaFormato("Informação de CPF",
+				      "Não válido. Digitos corretos?" );
+	    return;
+	}
+
 	if(!this.nome_completo.touched) {
 	    this.alertCampoObrigatorio("Favor informar nome completo." );
 	    return;
