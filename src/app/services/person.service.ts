@@ -22,7 +22,7 @@ export class PersonService {
 
 	console.log(credentialData);
 	
-	let url = 'http://localhost:8080/api/login';
+	let url = this.SERVERNAME + '/api/login';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 
