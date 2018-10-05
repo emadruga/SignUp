@@ -9,6 +9,9 @@ import { Observable } from 'rxjs';
 export class PersonService {
 
     private person: Person;
+
+    // private SERVERNAME = 'http://localhost:8080';
+    private SERVERNAME = '';
     
     constructor(private http: HttpClient) {
 
@@ -46,7 +49,7 @@ export class PersonService {
 
 	console.log(personData);
 	
-	let url = 'http://localhost:8080/api/rooms/insert';
+	let url = this.SERVERNAME + '/api/rooms/insert';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 
@@ -61,7 +64,7 @@ export class PersonService {
 	console.log("Registro a ser atualizado para:");
 	console.log(personData);
 	
-	let url = 'http://localhost:8080/api/rooms/update';
+	let url = this.SERVERNAME + '/api/rooms/update';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 
