@@ -49,7 +49,7 @@ export class PersonService {
 
 	console.log(personData);
 	
-	let url = this.SERVERNAME + '/api/rooms/insert';
+	let url = this.SERVERNAME + '/api/insert';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 
@@ -64,7 +64,7 @@ export class PersonService {
 	console.log("Registro a ser atualizado para:");
 	console.log(personData);
 	
-	let url = this.SERVERNAME + '/api/rooms/update';
+	let url = this.SERVERNAME + '/api/update';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 
