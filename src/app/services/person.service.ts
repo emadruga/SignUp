@@ -10,8 +10,8 @@ export class PersonService {
 
     private person: Person;
 
-    private SERVERNAME = 'http://localhost:8080';
-    // private SERVERNAME = 'https://shielded-temple-91138.herokuapp.com';
+    //private SERVERNAME = 'http://localhost:8080';
+    private SERVERNAME = 'https://shielded-temple-91138.herokuapp.com';
     
     constructor(private http: HttpClient) {
 
