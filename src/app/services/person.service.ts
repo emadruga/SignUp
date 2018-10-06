@@ -10,8 +10,8 @@ export class PersonService {
 
     private person: Person;
 
-    // private SERVERNAME = 'http://localhost:8080';
-    private SERVERNAME = 'https://shielded-temple-91138.herokuapp.com';
+    private SERVERNAME = 'http://localhost:8080';
+    // private SERVERNAME = 'https://shielded-temple-91138.herokuapp.com';
     
     constructor(private http: HttpClient) {
 
@@ -22,7 +22,7 @@ export class PersonService {
 
 	console.log(credentialData);
 	
-	let url = 'http://localhost:8080/api/login';
+	let url =  this.SERVERNAME + '/api/login';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 
@@ -49,7 +49,7 @@ export class PersonService {
 
 	console.log(personData);
 	
-	let url = this.SERVERNAME + '/api/insert';
+	let url = this.SERVERNAME + '/api/rooms/insert';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 
@@ -64,7 +64,7 @@ export class PersonService {
 	console.log("Registro a ser atualizado para:");
 	console.log(personData);
 	
-	let url = this.SERVERNAME + '/api/update';
+	let url = this.SERVERNAME + '/api/rooms/update';
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 

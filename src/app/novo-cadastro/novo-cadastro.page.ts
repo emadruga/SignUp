@@ -240,7 +240,7 @@ export class NovoCadastroPage implements OnInit {
 			console.log("Id recebido: " + person._id);
 			this.alertInsertOk("Informações salvas!");
 			this.personService.persistPersonLocally(person);
-			this.navCtrl.navigateForward('/perfil');
+			this.navCtrl.navigateForward('/Perfil');
 		    },
 		    (err) => {
 			console.log(err);
@@ -260,7 +260,7 @@ export class NovoCadastroPage implements OnInit {
 			console.log("Id recebido: " + person._id);
 			this.alertInsertOk("Informações atualizadas!");
 			this.personService.persistPersonLocally(person);
-			this.navCtrl.navigateForward('/perfil');
+			this.navCtrl.navigateForward('/Perfil');
 		    },
 		    (err) => {
 			console.log(err);

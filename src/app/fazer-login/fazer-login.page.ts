@@ -47,7 +47,7 @@ export class FazerLoginPage implements OnInit {
 		(person: Person) => {
 		    console.log("Auth Ok: " + person.email);
 		    this.personService.persistPersonLocally(person);
-		    this.navCtrl.navigateRoot('/NovoCadastro');
+		    this.navCtrl.navigateRoot('/Perfil');
 		},
 		(err) => {
 		    console.log(err);
