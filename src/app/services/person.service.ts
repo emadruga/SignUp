@@ -66,7 +66,7 @@ export class PersonService {
 	let hdrs =  new HttpHeaders().set('Content-Type', 'application/json');
 	console.log("Using " + url);
 
-	return  this.http.put<Person>(url,JSON.stringify(personData),
+	return  this.http.post<Person>(url,JSON.stringify(personData),
 			   {
 			       headers: hdrs,
 			   });
