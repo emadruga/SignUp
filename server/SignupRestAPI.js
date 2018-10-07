@@ -6,14 +6,27 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+var whitelist = ['https://stark-caverns-59860.herokuapp.com/','https://localhost:8080/']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Acesso proibido pelo CORS'))
+    }
+  }
+}
+
 var options = {
     //server: {socketOptions: {keepAlive: 1, connectTimeoutMS: 30000}},
     useMongoClient: true
 };
 
+var localPort = process.env.PORT || 8080;
+
 // Configuration
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/hotels', options);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/hotels', options);
 
 mongoose.connection.on("error", function(err) {
   console.log("Could not connect to MongoDb!");
@@ -112,7 +125,7 @@ app.post('/api/login', function(req, res, next) {
 });
 
 
-app.post('/api/rooms/insert', function(req, res, next) {
+app.post('/api/rooms/insert', cors(), function(req, res, next) {
     
     /* check if CPF is defined first! */
     const cpf_info = req.body.cpf;
@@ -169,7 +182,7 @@ app.post('/api/rooms/insert', function(req, res, next) {
     });
 });
 
-app.post('/api/rooms/update', function(req, res, next) {
+app.put('/api/rooms/update', cors(corsOptions), function(req, res, next) {
     
     /* check if CPF is defined first! */
     const cpf_info = req.body.cpf;
@@ -200,10 +213,12 @@ app.post('/api/rooms/update', function(req, res, next) {
     Room.findOneAndUpdate(query, updatePerson, options,(err,user) => {
 	   if (err) {
 	       // handle error
-	       console.log("Problema no servidor: tente de novo mais tarde...");
+	       console.log("Problema para atualizar no servidor");
 	       console.log(err);
-	       err.httpStatusCode = 500
-	       return next(err)
+
+	       res.status(statusCode >= 100 && statusCode < 600 ? err.code : 500);
+	       // err.httpStatusCode = 412
+	       // return next(err)
 	   }
 
 	   if (user) {
@@ -215,28 +230,6 @@ app.post('/api/rooms/update', function(req, res, next) {
 });
 
 
-app.post('/api/rooms/reserve', function(req, res) {
- 
-        console.log("Server: " + req.body.cpf);
-
-	var from_str = "2018-09-15";
-	var to_str   = "2018-09-25";
- 
-        Room.findByIdAndUpdate(req.body.cpf, {
-            $push: {"reserved": {from: from_str, to: to_str}}
-        }, {
-            safe: true,
-            new: true
-        }, function(err, room){
-            if(err){
-                res.send(err);
-            } else {
-                res.json(room);
-            }
-        });
- 
-});
-
 app.use((err, req, res, next) => {
     // log the error...
     // console.log(err);
@@ -244,5 +237,5 @@ app.use((err, req, res, next) => {
 })
 
 // listen
-app.listen(8080);
-console.log("App listening on port 8080");
+app.listen(localPort);
+console.log("App listening on port " + localPort);
