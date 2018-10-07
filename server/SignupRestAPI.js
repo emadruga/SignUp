@@ -13,7 +13,7 @@ var options = {
 
 // Configuration
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/hotels', options);
+mongoose.connect('mongodb://emadruga:dmtic2018@localhost:27017/hotels', options);
 
 mongoose.connection.on("error", function(err) {
   console.log("Could not connect to MongoDb!");
