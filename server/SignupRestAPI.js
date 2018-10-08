@@ -6,7 +6,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
-var whitelist = ['https://stark-caverns-59860.herokuapp.com/','https://localhost:8080/']
+var whitelist = ['http://cibernetica.inmetro.gov.br/','http://localhost:8080/']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -125,7 +125,7 @@ app.post('/api/login', function(req, res, next) {
 });
 
 
-app.post('/api/rooms/insert', cors(), function(req, res, next) {
+app.post('/api/rooms/insert', cors(corsOptions), function(req, res, next) {
     
     /* check if CPF is defined first! */
     const cpf_info = req.body.cpf;
@@ -182,7 +182,7 @@ app.post('/api/rooms/insert', cors(), function(req, res, next) {
     });
 });
 
-app.put('/api/rooms/update', cors(corsOptions), function(req, res, next) {
+app.post('/api/rooms/update', cors(corsOptions), function(req, res, next) {
     
     /* check if CPF is defined first! */
     const cpf_info = req.body.cpf;
@@ -216,9 +216,9 @@ app.put('/api/rooms/update', cors(corsOptions), function(req, res, next) {
 	       console.log("Problema para atualizar no servidor");
 	       console.log(err);
 
-	       res.status(statusCode >= 100 && statusCode < 600 ? err.code : 500);
-	       // err.httpStatusCode = 412
-	       // return next(err)
+	       const error = new Error('Atualização impossivel...')
+	       error.httpStatusCode = 412
+	       return next(error)
 	   }
 
 	   if (user) {
