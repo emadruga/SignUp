@@ -6,13 +6,14 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
-var whitelist = ['http://cibernetica.inmetro.gov.br/','http://localhost:8080/']
+var whitelist = ['http://cibernetica.inmetro.gov.br/','http://localhost:8080',
+		  'http://localhost:8100' ]
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
-      callback(new Error('Acesso proibido pelo CORS'))
+      callback(new Error('Acesso proibido pelo CORS: ' + origin))
     }
   }
 }
@@ -26,7 +27,8 @@ var localPort = process.env.PORT || 8080;
 
 // Configuration
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://emadruga:dmtic2018@localhost:27017/hotels', options);
+// mongoose.connect('mongodb://emadruga:dmtic2018@localhost:27017/hotels', options);
+mongoose.connect('mongodb://emadruga:123456@localhost:27017/hotels', options);
 
 mongoose.connection.on("error", function(err) {
   console.log("Could not connect to MongoDb!");
@@ -211,7 +213,8 @@ app.post('/api/rooms/update', cors(corsOptions), function(req, res, next) {
     var options = { new: true };
     
     Room.findOneAndUpdate(query, updatePerson, options,(err,user) => {
-	   if (err) {
+	console.log("Atualizado...");
+	if (err) {
 	       // handle error
 	       console.log("Problema para atualizar no servidor");
 	       console.log(err);
@@ -219,21 +222,24 @@ app.post('/api/rooms/update', cors(corsOptions), function(req, res, next) {
 	       const error = new Error('Atualização impossivel...')
 	       error.httpStatusCode = 412
 	       return next(error)
-	   }
+	}
 
-	   if (user) {
+	if (user) {
 	       // the user who goes by this CPF was updated... 
 	       console.log("Registro com CPF " + req.body.cpf + " atualizado...");
 	       res.json(user);
-	   }
+	}
     });
 });
 
 
 app.use((err, req, res, next) => {
     // log the error...
-    // console.log(err);
-    res.sendStatus(err.httpStatusCode)
+    console.log("app.use() error:");
+    console.log(err);
+    //res.sendStatus(err.httpStatusCode)
+    res.status(500)
+    res.json({ error: err })
 })
 
 // listen

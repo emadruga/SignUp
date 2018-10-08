@@ -52,7 +52,19 @@ export class PersonService {
     }
 
     persistPersonLocally(ppp: Person) {
+	console.log("Person persist: ");
+	console.log(ppp);
 	this.storage.set('single_person', ppp);
+
+	this.load().then((result) => {
+	    if (result) {
+		this.loaded = true;
+		console.log("Storage OK!");
+	    } else {
+		this.loaded = false;
+		console.log("Storage failed!");
+	    }
+	});
     }
 
     getLocalPerson() : Person {
@@ -65,9 +77,13 @@ export class PersonService {
     }
 
     resetLocalPerson() : void {	
-	this.person = null;
-	this.loaded = false;
-	this.persistPersonLocally(null);
+	this.storage.remove('single_person')
+	    .then(() =>
+		  {
+		      this.person = null;
+		      this.loaded = false;
+		  }
+		 );
     }
 
     

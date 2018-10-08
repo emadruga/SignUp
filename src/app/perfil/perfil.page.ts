@@ -15,7 +15,6 @@ export class PerfilPage implements OnInit {
     
     constructor(private personServ: PersonService,
 	       private navCtrl: NavController) {
-	this.pessoa = this.personServ.getLocalPerson();
     }
 
     doEdit() {
@@ -28,6 +27,13 @@ export class PerfilPage implements OnInit {
     }
 
     ngOnInit() {
-	console.log(this.pessoa);
+	this.personServ.load();
+	this.pessoa = this.personServ.getLocalPerson();
+	console.log("Perfil lido:");
+	if(this.personServ.loaded) {
+	    console.log(this.pessoa);
+	} else {
+	    console.log("Vazio");
+	}
     }
 }
