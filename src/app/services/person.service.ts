@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Person }     from '../interfaces/person';
+import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs';
 import { environment, SERVER_URL } from '../../environments/environment';
 
@@ -9,12 +10,32 @@ import { environment, SERVER_URL } from '../../environments/environment';
 })
 export class PersonService {
 
-    private person: Person;
+    public person: Person;
+    public loaded: boolean = false;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+	       private storage: Storage) {
 
-	this.person = undefined;
+	this.person = null;
     }
+
+    load(): Promise<boolean> {
+
+	return new Promise((resolve) => {
+
+	    this.storage.get('single_person').then((person) => {
+
+		if(person != null){
+		    this.person = person;
+		}
+        
+		this.loaded = true;
+		resolve(true);
+  
+	    });
+
+	});
+    } 
 
     doAuthenticateLogin(credentialData) : Observable<Person> {
 
@@ -30,16 +51,23 @@ export class PersonService {
 			   });
     }
 
-    persistPersonLocally(p: Person) {
-	this.person = p;
+    persistPersonLocally(ppp: Person) {
+	this.storage.set('single_person', ppp);
     }
 
     getLocalPerson() : Person {
-	return this.person;
+	if (this.loaded){
+	    return this.person;
+	}
+	else {
+	    return null;
+	}
     }
 
-    resetLocalPerson() : void {
-	this.person = undefined;
+    resetLocalPerson() : void {	
+	this.person = null;
+	this.loaded = false;
+	this.persistPersonLocally(null);
     }
 
     

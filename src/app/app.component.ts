@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Plugins } from '@capacitor/core';
+import { PersonService } from './services/person.service';
 
 const { SplashScreen, StatusBar } = Plugins;
 
@@ -8,13 +9,16 @@ const { SplashScreen, StatusBar } = Plugins;
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  constructor( ) {
-      SplashScreen.hide().catch((err) => {
-	  console.warn(err);
-      });
+    constructor( private personService: PersonService) {
 
-      StatusBar.hide().catch((err) => {
-	  console.warn(err);
-      });
+	this.personService.load();
+	
+	SplashScreen.hide().catch((err) => {
+	    console.warn(err);
+	});
+
+	StatusBar.hide().catch((err) => {
+	    console.warn(err);
+	});
   }
 }
