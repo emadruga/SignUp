@@ -89,7 +89,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomePage", function() { return HomePage; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/index.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
+/* harmony import */ var _services_person_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/person.service */ "./src/app/services/person.service.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -102,13 +103,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var HomePage = /** @class */ (function () {
-    function HomePage(navCtrl) {
+    function HomePage(navCtrl, personService) {
         this.navCtrl = navCtrl;
+        this.personService = personService;
     }
     HomePage.prototype.ngOnInit = function () {
-        console.log(_environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].message);
-        console.log(_environments_environment__WEBPACK_IMPORTED_MODULE_2__["SERVER_URL"]);
+        console.log(_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].message);
+        console.log(_environments_environment__WEBPACK_IMPORTED_MODULE_3__["SERVER_URL"]);
+        this.personService.resetLocalPerson();
     };
     HomePage.prototype.doForm = function () {
         console.log("Vamos criar nova ficha de pré-inscrição");
@@ -124,7 +128,8 @@ var HomePage = /** @class */ (function () {
             template: __webpack_require__(/*! ./home.page.html */ "./src/app/home/home.page.html"),
             styles: [__webpack_require__(/*! ./home.page.scss */ "./src/app/home/home.page.scss")],
         }),
-        __metadata("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_1__["NavController"]])
+        __metadata("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_1__["NavController"],
+            _services_person_service__WEBPACK_IMPORTED_MODULE_2__["PersonService"]])
     ], HomePage);
     return HomePage;
 }());

@@ -106,7 +106,6 @@ var PerfilPage = /** @class */ (function () {
     function PerfilPage(personServ, navCtrl) {
         this.personServ = personServ;
         this.navCtrl = navCtrl;
-        this.pessoa = this.personServ.getLocalPerson();
     }
     PerfilPage.prototype.doEdit = function () {
         this.navCtrl.navigateForward('/NovoCadastro');
@@ -116,7 +115,15 @@ var PerfilPage = /** @class */ (function () {
         this.navCtrl.navigateForward('/home');
     };
     PerfilPage.prototype.ngOnInit = function () {
-        console.log(this.pessoa);
+        this.personServ.load();
+        this.pessoa = this.personServ.getLocalPerson();
+        console.log("Perfil lido:");
+        if (this.personServ.loaded) {
+            console.log(this.pessoa);
+        }
+        else {
+            console.log("Vazio");
+        }
     };
     PerfilPage = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({

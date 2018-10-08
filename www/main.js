@@ -276,7 +276,20 @@ var PersonService = /** @class */ (function () {
         });
     };
     PersonService.prototype.persistPersonLocally = function (ppp) {
+        var _this = this;
+        console.log("Person persist: ");
+        console.log(ppp);
         this.storage.set('single_person', ppp);
+        this.load().then(function (result) {
+            if (result) {
+                _this.loaded = true;
+                console.log("Storage OK!");
+            }
+            else {
+                _this.loaded = false;
+                console.log("Storage failed!");
+            }
+        });
     };
     PersonService.prototype.getLocalPerson = function () {
         if (this.loaded) {
@@ -287,9 +300,12 @@ var PersonService = /** @class */ (function () {
         }
     };
     PersonService.prototype.resetLocalPerson = function () {
-        this.person = null;
-        this.loaded = false;
-        this.persistPersonLocally(null);
+        var _this = this;
+        this.storage.remove('single_person')
+            .then(function () {
+            _this.person = null;
+            _this.loaded = false;
+        });
     };
     PersonService.prototype.saveApplicant = function (personData) {
         console.log(personData);
